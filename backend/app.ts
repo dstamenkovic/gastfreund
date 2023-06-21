@@ -1,12 +1,11 @@
-import express, { Request, Response } from 'express';
+import express from 'express'
+import taskRoutes from './routes/taskRoutes'
 
-const app = express();
-const port = 4000;
+const app = express()
+const port = 4000
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-});
+app.use('/tasks', taskRoutes)
 
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
-});
+  console.log(`App listening at http://localhost:${port}`)
+})
