@@ -1,0 +1,22 @@
+{
+  "name": "gastfreund",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "backend": "npm start --workspace=backend",
+    "frontend": "npm start --workspace=frontend",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dstamenkovic/gastfreund.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}
