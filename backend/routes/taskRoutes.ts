@@ -1,10 +1,11 @@
 import express from 'express'
 
-import { list, create, update, deleteTask } from '../controllers/TaskController'
+import { list, create, update, deleteTask, get } from '../controllers/TaskController'
 
 const router = express.Router()
 
 router.get('', list)
+router.get('/:id', get)
 router.post('', create)
 router.put('/:id', update)
 router.delete('/:id', deleteTask)

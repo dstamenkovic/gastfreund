@@ -1,14 +1,14 @@
 import { v4 as uuidv4 } from 'uuid'
 import Joi from 'joi'
 
+import { Task } from '../data/Types'
+import { getDbInstance } from '../data/database'
+
 const taskSchema = Joi.object({
   id: Joi.string().uuid({ version: 'uuidv4' }).required(),
   title: Joi.string().required().min(3),
   status: Joi.string().valid('to-do', 'in-progress', 'done').required(),
 })
-
-import { getDbInstance } from '../data/database'
-import { Task } from '../data/Types'
 
 const checkIfTitleExists = async (title: string) => {
   const db = getDbInstance()
@@ -17,10 +17,9 @@ const checkIfTitleExists = async (title: string) => {
   return taskIdx !== -1
 }
 
-export const getTask = async (id: string) => {
+export const getTaskById = async (id: string) => {
   const db = getDbInstance()
   const taskIdx = await db.getIndex('/tasks', id)
-
   if (taskIdx === -1) {
     throw new Error('Task not found')
   }
@@ -36,7 +35,7 @@ export const getTasks = async () => {
   return tasks
 }
 
-export const createTask = async (data: Omit<Task, 'id'>) => {
+export const createTask = async (data: Omit<Task, 'id'>): Promise<Task> => {
   const db = getDbInstance()
   const newTask: Task = {
     id: uuidv4(),

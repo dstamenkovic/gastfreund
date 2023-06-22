@@ -6,6 +6,7 @@ import {
   getTasks,
   updateTask,
   deleteTask as deleteTaskService,
+  getTaskById,
 } from '../services/TaskService'
 
 interface CreateTaskProps extends Request {
@@ -17,9 +18,22 @@ interface UpdateTaskProps extends Request {
     id: string
   }
 }
-interface DeleteTaskProps extends Request {
+interface FindTaskProps extends Request {
   params: {
     id: string
+  }
+}
+
+export const get = async (req: FindTaskProps, res: Response) => {
+  try {
+    const { id } = req.params
+    const task = await getTaskById(id)
+    res.status(200).send(task)
+  } catch (error) {
+    res.status(400).send({
+      success: false,
+      message: error instanceof Error ? error.message : 'Could not retrieve task',
+    })
   }
 }
 
@@ -36,10 +50,11 @@ export const create = async (req: CreateTaskProps, res: Response) => {
       throw new Error('Missing at least one of the required parameters')
     }
 
-    await createTask({ title, status })
-    res.status(200).send({
+    const createdTask = await createTask({ title, status })
+    res.status(201).send({
       success: true,
       message: 'Task created successfully ',
+      id: createdTask.id,
     })
   } catch (error) {
     res.status(400).send({
@@ -65,7 +80,7 @@ export const update = async (req: UpdateTaskProps, res: Response) => {
   }
 }
 
-export const deleteTask = async (req: DeleteTaskProps, res: Response) => {
+export const deleteTask = async (req: FindTaskProps, res: Response) => {
   try {
     const { id } = req.params
     await deleteTaskService(id)
