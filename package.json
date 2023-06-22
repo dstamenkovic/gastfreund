@@ -5,7 +5,9 @@
   "scripts": {
     "backend": "npm start --workspace=backend",
     "frontend": "npm start --workspace=frontend",
-    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "test:backend": "npm test --workspace=backend",
+    "test:frontend": "npm test --workspace=frontend"
   },
   "repository": {
     "type": "git",
