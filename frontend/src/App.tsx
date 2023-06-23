@@ -1,14 +1,29 @@
-import Button from '@mui/material/Button'
-import styled from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 
-const StyledButton = styled(Button)`
-  color: green !important;
+import Dashboard from 'containers/DashboardContainer'
+import Navbar from 'components/Navbar'
+
+const GlobalStyle = createGlobalStyle`
+  html,body {
+    margin: 0;
+  }
 `
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+})
 
 export default function MyApp() {
   return (
-    <div>
-      <StyledButton variant="contained">Hello World</StyledButton>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <GlobalStyle />
+      <CssBaseline />
+      <Navbar />
+      <Dashboard />
+    </ThemeProvider>
   )
 }
