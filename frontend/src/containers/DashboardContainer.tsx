@@ -1,8 +1,17 @@
+import Container from '@mui/material/Container'
+import { styled } from '@mui/system'
+
+import Board from 'components/dashboard/Board'
+
+const Wrapper = styled(Container)`
+  padding-top: 3rem;
+`
+
 const DashboardContainer = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
+    <Wrapper maxWidth="lg">
+      <Board />
+    </Wrapper>
   )
 }
 
