@@ -12,7 +12,7 @@ const Column = ({ status }: Props) => {
   return (
     <Grid container item xs={4} direction="column">
       <TitleWrapper item status={status}>
-        <Title>{status.replace('-', ' ')}</Title>
+        <Title variant="h5">{status.replace('-', ' ')}</Title>
       </TitleWrapper>
       <TasksWrapper container item status={status} direction="column">
         <Grid item>
