@@ -7,6 +7,13 @@ export const tasksApi = createApi({
   endpoints: builder => ({
     getTasks: builder.query<Task[], void>({
       query: () => '/tasks',
+      transformResponse: (response: Task[]) => {
+        // sort tasks by updatedAt desc
+        // so the most recent tasks appear first
+        return response.sort(
+          (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        )
+      },
     }),
   }),
 })
