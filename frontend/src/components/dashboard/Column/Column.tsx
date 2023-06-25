@@ -28,7 +28,7 @@ const Column = ({ status, tasks }: Props) => {
         {tasks.length ? (
           tasks.map(task => (
             <Grid item key={task.id}>
-              <Task title={task.title} status={status} />
+              <Task task={task} />
             </Grid>
           ))
         ) : (

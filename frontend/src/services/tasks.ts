@@ -15,7 +15,28 @@ export const tasksApi = createApi({
         )
       },
     }),
+    updateTask: builder.mutation<Task, Partial<Task>>({
+      query: ({ id, ...patch }) => ({
+        url: `/tasks/${id}`,
+        method: 'PATCH',
+        body: patch,
+      }),
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled
+        const updatedTask = data
+        // update the item in tasks
+        dispatch(
+          tasksApi.util.updateQueryData('getTasks', undefined, old => {
+            const idx = old.findIndex(task => task.id === updatedTask.id)
+            if (idx !== -1) {
+              old[idx] = updatedTask
+            }
+            return old
+          })
+        )
+      },
+    }),
   }),
 })
 
-export const { useGetTasksQuery } = tasksApi
+export const { useGetTasksQuery, useUpdateTaskMutation } = tasksApi
