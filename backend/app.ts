@@ -1,10 +1,13 @@
 import express from 'express'
-import taskRoutes from './routes/taskRoutes'
+import cors from 'cors'
 
+import taskRoutes from './routes/taskRoutes'
 import { initializeDb } from './data/database'
 import initialData from './data/initialData'
 
 const app = express()
+
+app.use(cors())
 
 initializeDb(initialData)
 

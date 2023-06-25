@@ -1,6 +1,7 @@
 import Container from '@mui/material/Container'
 import { styled } from '@mui/material/styles'
 
+import { useGetTasksQuery } from 'services/tasks'
 import Board from 'components/dashboard/Board'
 
 const Wrapper = styled(Container)`
@@ -8,11 +9,9 @@ const Wrapper = styled(Container)`
 `
 
 const DashboardContainer = () => {
-  return (
-    <Wrapper maxWidth="lg">
-      <Board />
-    </Wrapper>
-  )
+  const { data, isLoading } = useGetTasksQuery()
+
+  return <Wrapper maxWidth="lg">{data && <Board tasks={data} />}</Wrapper>
 }
 
 export default DashboardContainer
