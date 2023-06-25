@@ -10,7 +10,7 @@ import {
 } from '../services/TaskService'
 
 interface CreateTaskProps extends Request {
-  body: Omit<Task, 'id'>
+  body: Omit<Task, 'id' | 'updateAt'>
 }
 interface UpdateTaskProps extends Request {
   body: Partial<Task>

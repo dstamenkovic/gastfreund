@@ -20,7 +20,7 @@ describe('Tasks', () => {
 
   it('Should create a new task', async () => {
     // create task
-    const newTask: Omit<Task, 'id'> = {
+    const newTask: Omit<Task, 'id' | 'updatedAt'> = {
       title: 'New test task',
       status: 'to-do',
     }
@@ -39,7 +39,7 @@ describe('Tasks', () => {
     const allTasks = await request(app).get('/tasks')
     const existingTaskTitle = allTasks.body[0].title
 
-    const newTask: Omit<Task, 'id'> = {
+    const newTask: Omit<Task, 'id' | 'updatedAt'> = {
       title: existingTaskTitle,
       status: 'to-do',
     }
@@ -75,11 +75,13 @@ describe('Tasks', () => {
     const taskToUpdate = allTasks.body[0]
 
     const newTitle = 'Updated title'
-    const response = await request(app).put(`/tasks/${taskToUpdate.id}`).send({ title: newTitle })
+    const response = await request(app).patch(`/tasks/${taskToUpdate.id}`).send({ title: newTitle })
     expect(response.status).toBe(200)
 
     const updatedTask = await request(app).get(`/tasks/${taskToUpdate.id}`)
     expect(updatedTask.body.title).toBe(newTitle)
+    // updatedAt should remain the same
+    expect(updatedTask.body.updatedAt).toBe(taskToUpdate.updatedAt)
   })
 
   it('Should update the task status', async () => {
@@ -87,11 +89,15 @@ describe('Tasks', () => {
     const taskToUpdate = allTasks.body[0]
 
     const newStatus = 'done'
-    const response = await request(app).put(`/tasks/${taskToUpdate.id}`).send({ status: newStatus })
+    const response = await request(app)
+      .patch(`/tasks/${taskToUpdate.id}`)
+      .send({ status: newStatus })
     expect(response.status).toBe(200)
 
     const updatedTask = await request(app).get(`/tasks/${taskToUpdate.id}`)
     expect(updatedTask.body.status).toBe(newStatus)
+    // updatedAt should be updated
+    expect(updatedTask.body.updatedAt).not.toBe(taskToUpdate.updatedAt)
   })
 
   it('Should get an error when updating a task with an invalid status', async () => {
@@ -99,7 +105,9 @@ describe('Tasks', () => {
     const taskToUpdate = allTasks.body[0]
 
     const newStatus = 'invalid status'
-    const response = await request(app).put(`/tasks/${taskToUpdate.id}`).send({ status: newStatus })
+    const response = await request(app)
+      .patch(`/tasks/${taskToUpdate.id}`)
+      .send({ status: newStatus })
     expect(response.status).toBe(400)
   })
 

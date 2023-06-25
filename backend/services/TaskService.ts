@@ -8,6 +8,7 @@ const taskSchema = Joi.object({
   id: Joi.string().uuid({ version: 'uuidv4' }).required(),
   title: Joi.string().required().min(3),
   status: Joi.string().valid('to-do', 'in-progress', 'done').required(),
+  updatedAt: Joi.date().required(),
 })
 
 const checkIfTitleExists = async (title: string) => {
@@ -35,10 +36,11 @@ export const getTasks = async () => {
   return tasks
 }
 
-export const createTask = async (data: Omit<Task, 'id'>): Promise<Task> => {
+export const createTask = async (data: Omit<Task, 'id' | 'updatedAt'>): Promise<Task> => {
   const db = getDbInstance()
   const newTask: Task = {
     id: uuidv4(),
+    updatedAt: new Date(),
     ...data,
   }
 
@@ -67,10 +69,12 @@ export const updateTask = async (id: string, data: Partial<Task>) => {
     throw new Error('Task not found')
   }
 
-  const taskDb = await db.getData(`/tasks[${taskIdx}]`)
+  const taskDb: Task = await db.getData(`/tasks[${taskIdx}]`)
+
   const updatedTask = {
     ...taskDb,
     ...data,
+    updatedAt: data.status && taskDb.status !== data.status ? new Date() : taskDb.updatedAt,
   }
 
   // Validate data
