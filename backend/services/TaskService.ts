@@ -30,9 +30,9 @@ export const getTaskById = async (id: string) => {
   return task
 }
 
-export const getTasks = async () => {
+export const getTasks = async (): Promise<Task[]> => {
   const db = getDbInstance()
-  const tasks = await db.getData('/tasks')
+  const tasks: Task[] = await db.getData('/tasks')
   return tasks
 }
 
@@ -61,7 +61,7 @@ export const createTask = async (data: Omit<Task, 'id' | 'updatedAt'>): Promise<
   return newTask
 }
 
-export const updateTask = async (id: string, data: Partial<Task>) => {
+export const updateTask = async (id: string, data: Partial<Task>): Promise<Task> => {
   const db = getDbInstance()
   const taskIdx = await db.getIndex('/tasks', id)
 
@@ -90,7 +90,7 @@ export const updateTask = async (id: string, data: Partial<Task>) => {
   return updatedTask
 }
 
-export const deleteTask = async (id: string) => {
+export const deleteTask = async (id: string): Promise<void> => {
   const db = getDbInstance()
   const taskIdx = await db.getIndex('/tasks', id)
 

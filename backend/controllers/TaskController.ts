@@ -51,11 +51,7 @@ export const create = async (req: CreateTaskProps, res: Response) => {
     }
 
     const createdTask = await createTask({ title, status })
-    res.status(201).send({
-      success: true,
-      message: 'Task created successfully ',
-      id: createdTask.id,
-    })
+    res.status(201).send(createdTask)
   } catch (error) {
     res.status(400).send({
       success: false,
@@ -67,11 +63,8 @@ export const create = async (req: CreateTaskProps, res: Response) => {
 export const update = async (req: UpdateTaskProps, res: Response) => {
   try {
     const { id } = req.params
-    await updateTask(id, req.body)
-    res.status(200).send({
-      success: true,
-      message: 'Task updated successfully ',
-    })
+    const updatedTask = await updateTask(id, req.body)
+    res.status(200).send(updatedTask)
   } catch (error) {
     res.status(400).send({
       success: false,
