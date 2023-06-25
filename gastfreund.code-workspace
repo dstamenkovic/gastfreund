@@ -12,5 +12,8 @@
       "path": "./frontend",
       "name": "frontend"
     }
-  ]
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": ["project-root"]
+  }
 }
