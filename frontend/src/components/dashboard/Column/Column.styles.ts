@@ -13,7 +13,7 @@ export const TitleWrapper = styled(Grid)<StyleProps>`
   position: relative;
   background-color: ${({ status }) => returnColumnTitleColor(status)};
   margin-bottom: 0.5rem;
-  padding: 1.2rem 1rem;
+  padding: 1.2rem 1rem 0.5rem 1rem;
 `
 
 export const Title = styled(Typography)`
@@ -21,6 +21,13 @@ export const Title = styled(Typography)`
   text-align: center;
   color: #fef8fc;
   font-weight: bold;
+`
+
+export const Count = styled(Typography)`
+  text-align: center;
+  color: #fef8fc;
+  font-weight: bold;
+  margin: 0;
 `
 
 export const TasksWrapper = styled(Grid)<StyleProps>`
@@ -36,6 +43,10 @@ export const AddBtn = styled(IconButton)`
   top: 50%;
   right: 5%;
   transform: translate(-5%, -50%);
+
+  svg {
+    font-size: 2rem;
+  }
 
   &:hover {
     background-color: transparent;

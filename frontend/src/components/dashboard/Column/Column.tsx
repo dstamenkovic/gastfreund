@@ -7,7 +7,7 @@ import Add from '../Task/Add'
 import type { RootState } from 'store'
 import { setCreatingTaskIn } from 'store/dashSlice'
 import type { Task as TaskType } from 'Types'
-import { TitleWrapper, Title, TasksWrapper, AddBtn } from './Column.styles'
+import { TitleWrapper, Title, TasksWrapper, AddBtn, Count } from './Column.styles'
 import Typography from '@mui/material/Typography'
 import AddIcon from '@mui/icons-material/Add'
 
@@ -30,6 +30,7 @@ const Column = ({ status, tasks }: Props) => {
     <Grid container item xs={4} direction="column">
       <TitleWrapper item status={status}>
         <Title variant="h5">{status.replace('-', ' ')}</Title>
+        <Count variant="h6">({tasks.length})</Count>
         <AddBtn onClick={() => dispatch(setCreatingTaskIn(status))}>
           <AddIcon />
         </AddBtn>

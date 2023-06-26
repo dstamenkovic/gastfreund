@@ -22,15 +22,19 @@ export const tasksApi = createApi({
         body,
       }),
       async onQueryStarted(body, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled
-        const newTask = data
-        // add the new task to the list of tasks, at the beginning
-        dispatch(
-          tasksApi.util.updateQueryData('getTasks', undefined, old => {
-            old.unshift(newTask)
-            return old
-          })
-        )
+        try {
+          const { data } = await queryFulfilled
+          const newTask = data
+          // add the new task to the list of tasks, at the beginning
+          dispatch(
+            tasksApi.util.updateQueryData('getTasks', undefined, old => {
+              old.unshift(newTask)
+              return old
+            })
+          )
+        } catch (error) {
+          console.log(error)
+        }
       },
     }),
     updateTask: builder.mutation<Task, Partial<Task>>({
@@ -40,18 +44,22 @@ export const tasksApi = createApi({
         body: patch,
       }),
       async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled
-        const updatedTask = data
-        // update the item in tasks
-        dispatch(
-          tasksApi.util.updateQueryData('getTasks', undefined, old => {
-            const idx = old.findIndex(task => task.id === updatedTask.id)
-            if (idx !== -1) {
-              old[idx] = updatedTask
-            }
-            return old
-          })
-        )
+        try {
+          const { data } = await queryFulfilled
+          const updatedTask = data
+          // update the item in tasks
+          dispatch(
+            tasksApi.util.updateQueryData('getTasks', undefined, old => {
+              const idx = old.findIndex(task => task.id === updatedTask.id)
+              if (idx !== -1) {
+                old[idx] = updatedTask
+              }
+              return old
+            })
+          )
+        } catch (error) {
+          console.log(error)
+        }
       },
     }),
     deleteTask: builder.mutation<{ id: string }, { id: string }>({
@@ -60,17 +68,21 @@ export const tasksApi = createApi({
         method: 'DELETE',
       }),
       async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
-        await queryFulfilled
-        // remove the item from tasks
-        dispatch(
-          tasksApi.util.updateQueryData('getTasks', undefined, old => {
-            const idx = old.findIndex(task => task.id === id)
-            if (idx !== -1) {
-              old.splice(idx, 1)
-            }
-            return old
-          })
-        )
+        try {
+          await queryFulfilled
+          // remove the item from tasks
+          dispatch(
+            tasksApi.util.updateQueryData('getTasks', undefined, old => {
+              const idx = old.findIndex(task => task.id === id)
+              if (idx !== -1) {
+                old.splice(idx, 1)
+              }
+              return old
+            })
+          )
+        } catch (error) {
+          console.log(error)
+        }
       },
     }),
   }),
