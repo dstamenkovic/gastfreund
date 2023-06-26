@@ -1,5 +1,5 @@
 import Board from './Board'
-import { render, screen } from '@testing-library/react'
+import { render, screen } from 'test-utils'
 
 describe('Board', () => {
   it('Renders all three columns', () => {

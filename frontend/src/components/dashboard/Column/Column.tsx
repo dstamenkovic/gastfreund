@@ -32,19 +32,23 @@ const Column = ({ status, tasks, globalLoading }: Props) => {
       <TitleWrapper item status={status}>
         <Title variant="h5">{status.replace('-', ' ')}</Title>
         <Count variant="h6">({tasks.length})</Count>
-        <AddBtn onClick={() => dispatch(setCreatingTaskIn(status))} disabled={globalLoading}>
+        <AddBtn
+          onClick={() => dispatch(setCreatingTaskIn(status))}
+          disabled={globalLoading || creatingTaskIn === status}
+          aria-label="add task"
+        >
           <AddIcon />
         </AddBtn>
       </TitleWrapper>
       <TasksWrapper container item status={status} direction="column">
         {creatingTaskIn === status && (
-          <Grid item>
+          <Grid item data-testid="add-task-wrapper">
             <Add status={status} globalLoading={globalLoading} />
           </Grid>
         )}
         {tasks.length ? (
           tasks.map(task => (
-            <Grid item key={task.id}>
+            <Grid item key={task.id} data-testid="task-wrapper">
               <Task task={task} globalLoading={globalLoading} />
             </Grid>
           ))

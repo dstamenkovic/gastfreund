@@ -46,7 +46,11 @@ const TaskEdit = ({ title, isLoading, onSave, onCancel, saveTextToStore, creatin
           <CancelBtn onClick={onCancel} disabled={isLoading}>
             Cancel
           </CancelBtn>
-          <SaveBtn variant="text" onClick={() => onSave(inputValue)} disabled={isLoading}>
+          <SaveBtn
+            variant="text"
+            onClick={() => onSave(inputValue)}
+            disabled={isLoading || inputValue.length < 3}
+          >
             {isLoading ? <CircularProgress size={24} /> : creatingTask ? 'Create' : 'Save'}
           </SaveBtn>
         </Box>

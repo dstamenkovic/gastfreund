@@ -35,7 +35,7 @@ export const getTasks = async (title: string): Promise<Task[]> => {
   let tasks: Task[] = await db.getData('/tasks')
 
   if (title) {
-    tasks = tasks.filter((task: Task) => task.title.toLowerCase().includes(title))
+    tasks = tasks.filter((task: Task) => task.title.toLowerCase().includes(title.toLowerCase()))
   }
 
   return tasks
