@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -13,7 +14,7 @@ import '@fontsource/roboto/700.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 
-import { store } from './store'
+import { store, persistor } from './store'
 
 const GlobalStyle = createGlobalStyle`
   html,body {
@@ -31,11 +32,13 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={darkTheme}>
-        <GlobalStyle />
-        <CssBaseline />
-        <App />
-      </ThemeProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider theme={darkTheme}>
+          <GlobalStyle />
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 )

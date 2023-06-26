@@ -23,7 +23,7 @@ export const TaskElement = styled(Paper)<Pick<TaskType, 'status'>>`
   color: #dbfefe;
   &:hover {
     color: #fff;
-    box-shadow: ${({ theme }) => theme.shadows[5]};
+    box-shadow: ${({ theme }) => theme.shadows[7]};
 
     .delete-task-btn {
       display: block;
@@ -41,4 +41,8 @@ export const InputField = styled(TextField)`
 
 export const SaveBtn = styled(Button)`
   color: #fff;
+`
+
+export const CancelBtn = styled(Button)`
+  color: #d1d5db;
 `

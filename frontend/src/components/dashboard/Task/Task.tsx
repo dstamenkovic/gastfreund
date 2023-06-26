@@ -1,71 +1,58 @@
-import { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
-import CircularProgress from '@mui/material/CircularProgress'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setActiveTask } from 'store/dashSlice'
+import { setActiveTaskID, removeActiveTaskData } from 'store/dashSlice'
 import type { RootState } from 'store'
 import type { Task as TaskType } from 'Types'
 import { useUpdateTaskMutation } from 'services/tasks'
-import { TaskElement, DeleteBtn, SaveBtn, InputField } from './Task.styles'
+import { TaskElement, DeleteBtn } from './Task.styles'
+import Edit from './Edit'
 
 type Props = {
   task: TaskType
 }
 
 const Task = ({ task }: Props) => {
-  const activeTask = useSelector((state: RootState) => state.dash.activeTask)
+  const activeTaskID = useSelector((state: RootState) => state.dash.activeTaskID)
+  const activeTaskText = useSelector((state: RootState) => state.dash.activeTaskText)
   const dispatch = useDispatch()
-
-  const [inputValue, setInputValue] = useState<string>(task.title || '')
-
   const [updateTask, { isLoading }] = useUpdateTaskMutation()
 
-  const saveTask = async () => {
-    if (inputValue === task.title) {
-      dispatch(setActiveTask(null))
+  const dataPersisted = activeTaskText && activeTaskID === task.id
 
+  const saveTask = async (inputVal: string) => {
+    if (inputVal === task.title) {
+      dispatch(removeActiveTaskData())
       return
     }
+    await updateTask({ id: task.id, title: inputVal })
+    dispatch(removeActiveTaskData())
+  }
 
-    await updateTask({ id: task.id, title: inputValue })
-    dispatch(setActiveTask(null))
+  const onCancel = () => {
+    dispatch(removeActiveTaskData())
   }
 
   return (
     <div>
       <TaskElement
         status={task.status}
-        elevation={3}
-        onDoubleClick={() => dispatch(setActiveTask(task.id))}
+        elevation={activeTaskID === task.id ? 7 : 3}
+        onDoubleClick={() => dispatch(setActiveTaskID(task.id))}
       >
-        {activeTask !== task.id && (
+        {activeTaskID !== task.id && (
           <DeleteBtn className="delete-task-btn">
             <CloseIcon />
           </DeleteBtn>
         )}
-        {activeTask === task.id ? (
-          <>
-            <InputField
-              label=""
-              value={inputValue}
-              multiline
-              placeholder="Task title"
-              rows={2}
-              variant="standard"
-              fullWidth
-              onChange={e => setInputValue(e.target.value)}
-              InputProps={{
-                disableUnderline: true,
-              }}
-              disabled={isLoading}
-              onKeyDown={e => e.key === 'Enter' && saveTask()}
-            />
-            <SaveBtn variant="text" fullWidth onClick={saveTask} disabled={isLoading}>
-              {isLoading ? <CircularProgress size={24} /> : 'Save'}
-            </SaveBtn>
-          </>
+        {activeTaskID === task.id ? (
+          <Edit
+            isLoading={isLoading}
+            title={dataPersisted ? activeTaskText : task.title}
+            onSave={saveTask}
+            onCancel={onCancel}
+          />
         ) : (
           <Typography variant="h6" component="h6">
             {task.title}

@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid'
 
-import Column from './Column'
+import Column from '../Column'
 import { Task } from 'Types'
 
 type Props = {

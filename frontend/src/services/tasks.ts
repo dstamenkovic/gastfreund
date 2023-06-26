@@ -15,6 +15,24 @@ export const tasksApi = createApi({
         )
       },
     }),
+    createTask: builder.mutation<Task, Partial<Task>>({
+      query: body => ({
+        url: '/tasks',
+        method: 'POST',
+        body,
+      }),
+      async onQueryStarted(body, { dispatch, queryFulfilled }) {
+        const { data } = await queryFulfilled
+        const newTask = data
+        // add the new task to the list of tasks, at the beginning
+        dispatch(
+          tasksApi.util.updateQueryData('getTasks', undefined, old => {
+            old.unshift(newTask)
+            return old
+          })
+        )
+      },
+    }),
     updateTask: builder.mutation<Task, Partial<Task>>({
       query: ({ id, ...patch }) => ({
         url: `/tasks/${id}`,
