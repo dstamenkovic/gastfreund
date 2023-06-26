@@ -54,7 +54,31 @@ export const tasksApi = createApi({
         )
       },
     }),
+    deleteTask: builder.mutation<{ id: string }, { id: string }>({
+      query: ({ id }) => ({
+        url: `/tasks/${id}`,
+        method: 'DELETE',
+      }),
+      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        await queryFulfilled
+        // remove the item from tasks
+        dispatch(
+          tasksApi.util.updateQueryData('getTasks', undefined, old => {
+            const idx = old.findIndex(task => task.id === id)
+            if (idx !== -1) {
+              old.splice(idx, 1)
+            }
+            return old
+          })
+        )
+      },
+    }),
   }),
 })
 
-export const { useGetTasksQuery, useCreateTaskMutation, useUpdateTaskMutation } = tasksApi
+export const {
+  useGetTasksQuery,
+  useCreateTaskMutation,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation,
+} = tasksApi

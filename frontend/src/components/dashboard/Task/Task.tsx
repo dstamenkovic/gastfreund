@@ -1,14 +1,15 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setActiveTaskID, removeActiveTaskData, setActiveTaskText } from 'store/dashSlice'
+import { useUpdateTaskMutation, useDeleteTaskMutation } from 'services/tasks'
 import type { RootState } from 'store'
+import { setActiveTaskID, removeActiveTaskData, setActiveTaskText } from 'store/dashSlice'
 import type { Task as TaskType } from 'Types'
-import { useUpdateTaskMutation } from 'services/tasks'
 import { TaskElement, DeleteBtn } from './Task.styles'
 import Edit from './Edit'
+import AlertDialog from 'components/AlertDialog'
 
 type Props = {
   task: TaskType
@@ -19,6 +20,8 @@ const Task = ({ task }: Props) => {
   const activeTaskText = useSelector((state: RootState) => state.dash.activeTaskText)
   const dispatch = useDispatch()
   const [updateTask, { isLoading }] = useUpdateTaskMutation()
+  const [deleteTask, deleteTaskData] = useDeleteTaskMutation()
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   const dataPersisted = activeTaskText && activeTaskID === task.id
 
@@ -42,6 +45,11 @@ const Task = ({ task }: Props) => {
     dispatch(removeActiveTaskData())
   }
 
+  const handleDelete = async () => {
+    await deleteTask({ id: task.id })
+    setShowDeleteDialog(false)
+  }
+
   return (
     <div>
       <TaskElement
@@ -49,8 +57,18 @@ const Task = ({ task }: Props) => {
         elevation={activeTaskID === task.id ? 7 : 3}
         onDoubleClick={() => dispatch(setActiveTaskID(task.id))}
       >
+        {showDeleteDialog && (
+          <AlertDialog
+            open={showDeleteDialog}
+            title="Delete Task"
+            text="Are you sure you want to delete this task?"
+            handleCancel={() => setShowDeleteDialog(false)}
+            handleConfirm={handleDelete}
+            loading={deleteTaskData.isLoading}
+          />
+        )}
         {activeTaskID !== task.id && (
-          <DeleteBtn className="delete-task-btn">
+          <DeleteBtn className="delete-task-btn" onClick={() => setShowDeleteDialog(true)}>
             <CloseIcon />
           </DeleteBtn>
         )}
