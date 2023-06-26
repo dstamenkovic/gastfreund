@@ -120,6 +120,15 @@ describe('Tasks', () => {
     expect(response.status).toBe(400)
   })
 
+  it('Should get an error when updating a task with an existing title', async () => {
+    const allTasks = await request(app).get('/tasks')
+    const taskToUpdate = allTasks.body[0]
+
+    const newTitle = allTasks.body[1].title
+    const response = await request(app).patch(`/tasks/${taskToUpdate.id}`).send({ title: newTitle })
+    expect(response.status).toBe(400)
+  })
+
   it('Should delete a task', async () => {
     const allTasks = await request(app).get('/tasks')
     const taskToDelete = allTasks.body[0]

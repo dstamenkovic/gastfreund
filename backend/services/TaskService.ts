@@ -73,6 +73,12 @@ export const updateTask = async (id: string, data: Partial<Task>): Promise<Task>
   if (taskIdx === -1) {
     throw new Error('Task not found')
   }
+  if (data.title) {
+    const titleExists = await checkIfTitleExists(data.title)
+    if (titleExists) {
+      throw new Error('Task with this title already exists')
+    }
+  }
 
   const taskDb: Task = await db.getData(`/tasks[${taskIdx}]`)
 
