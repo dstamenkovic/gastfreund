@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import CircularProgress from '@mui/material/CircularProgress'
 import Box from '@mui/material/Box'
-import { useDispatch } from 'react-redux'
 
-import { setActiveTaskText } from 'store/dashSlice'
 import { SaveBtn, InputField, CancelBtn } from './Task.styles'
 
 type Props = {
@@ -11,20 +9,20 @@ type Props = {
   isLoading: boolean
   onSave: (inputVal: string) => void
   onCancel: () => void
+  saveTextToStore: (inputVal: string) => void
+  creatingTask?: boolean
 }
 
-const TaskEdit = ({ title, isLoading, onSave, onCancel }: Props) => {
+const TaskEdit = ({ title, isLoading, onSave, onCancel, saveTextToStore, creatingTask }: Props) => {
   const [inputValue, setInputValue] = useState<string>(title || '')
-  const dispatch = useDispatch()
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      console.log('update store', inputValue)
-      dispatch(setActiveTaskText(inputValue))
+      if (inputValue !== title) saveTextToStore(inputValue)
     }, 500)
 
     return () => clearTimeout(delayDebounceFn)
-  }, [inputValue, dispatch])
+  }, [inputValue, saveTextToStore, title])
 
   return (
     <>
@@ -47,7 +45,7 @@ const TaskEdit = ({ title, isLoading, onSave, onCancel }: Props) => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <CancelBtn onClick={onCancel}>Cancel</CancelBtn>
           <SaveBtn variant="text" onClick={() => onSave(inputValue)} disabled={isLoading}>
-            {isLoading ? <CircularProgress size={24} /> : 'Save'}
+            {isLoading ? <CircularProgress size={24} /> : creatingTask ? 'Create' : 'Save'}
           </SaveBtn>
         </Box>
       </>

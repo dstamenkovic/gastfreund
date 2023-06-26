@@ -1,8 +1,9 @@
+import { useCallback } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setActiveTaskID, removeActiveTaskData } from 'store/dashSlice'
+import { setActiveTaskID, removeActiveTaskData, setActiveTaskText } from 'store/dashSlice'
 import type { RootState } from 'store'
 import type { Task as TaskType } from 'Types'
 import { useUpdateTaskMutation } from 'services/tasks'
@@ -20,6 +21,13 @@ const Task = ({ task }: Props) => {
   const [updateTask, { isLoading }] = useUpdateTaskMutation()
 
   const dataPersisted = activeTaskText && activeTaskID === task.id
+
+  const saveTextToStore = useCallback(
+    (inputVal: string) => {
+      dispatch(setActiveTaskText(inputVal))
+    },
+    [dispatch]
+  )
 
   const saveTask = async (inputVal: string) => {
     if (inputVal === task.title) {
@@ -52,6 +60,7 @@ const Task = ({ task }: Props) => {
             title={dataPersisted ? activeTaskText : task.title}
             onSave={saveTask}
             onCancel={onCancel}
+            saveTextToStore={saveTextToStore}
           />
         ) : (
           <Typography variant="h6" component="h6">

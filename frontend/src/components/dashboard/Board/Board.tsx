@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid'
 
 import Column from '../Column'
-import { Task } from 'Types'
+import type { Task } from 'Types'
 
 type Props = {
   tasks: Task[]
