@@ -1,4 +1,5 @@
 import Container from '@mui/material/Container'
+import CircularProgress from '@mui/material/CircularProgress'
 import { styled } from '@mui/material/styles'
 
 import { useGetTasksQuery } from 'services/tasks'
@@ -8,10 +9,22 @@ const Wrapper = styled(Container)`
   padding-top: 3rem;
 `
 
-const DashboardContainer = () => {
-  const { data, isLoading } = useGetTasksQuery()
+const Loader = styled(CircularProgress)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`
 
-  return <Wrapper maxWidth="lg">{data && <Board tasks={data} />}</Wrapper>
+const DashboardContainer = () => {
+  const { data, isLoading } = useGetTasksQuery(undefined)
+  const globalLoading = isLoading
+
+  return (
+    <Wrapper maxWidth="lg">
+      {globalLoading && <Loader />}
+      {data && <Board tasks={data} globalLoading={globalLoading} />}
+    </Wrapper>
+  )
 }
 
 export default DashboardContainer

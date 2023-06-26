@@ -43,7 +43,9 @@ const TaskEdit = ({ title, isLoading, onSave, onCancel, saveTextToStore, creatin
           onKeyDown={e => e.key === 'Enter' && onSave(inputValue)}
         />
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <CancelBtn onClick={onCancel}>Cancel</CancelBtn>
+          <CancelBtn onClick={onCancel} disabled={isLoading}>
+            Cancel
+          </CancelBtn>
           <SaveBtn variant="text" onClick={() => onSave(inputValue)} disabled={isLoading}>
             {isLoading ? <CircularProgress size={24} /> : creatingTask ? 'Create' : 'Save'}
           </SaveBtn>

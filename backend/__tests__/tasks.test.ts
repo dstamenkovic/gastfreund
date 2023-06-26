@@ -18,6 +18,15 @@ describe('Tasks', () => {
     expect(response.body).toHaveLength(3)
   })
 
+  it('Should return the list of tasks filtered by title', async () => {
+    const term = 'model of wind'
+    const response = await request(app).get(`/tasks?title=${term}`)
+    expect(response.status).toBe(200)
+    expect(response.body).toBeInstanceOf(Array)
+    expect(response.body).toHaveLength(1)
+    expect(response.body[0].title).toContain(term)
+  })
+
   it('Should create a new task', async () => {
     // create task
     const newTask: Omit<Task, 'id' | 'updatedAt'> = {

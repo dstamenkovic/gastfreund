@@ -10,9 +10,11 @@ const app = express()
 app.use(cors())
 
 // delay all requests by 500ms
-app.use((req, res, next) => {
-  setTimeout(next, 500)
-})
+if (process.env.NODE_ENV !== 'test') {
+  app.use((req, res, next) => {
+    setTimeout(next, 500)
+  })
+}
 
 initializeDb(initialData)
 

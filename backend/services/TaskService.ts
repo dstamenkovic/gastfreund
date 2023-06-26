@@ -30,9 +30,14 @@ export const getTaskById = async (id: string) => {
   return task
 }
 
-export const getTasks = async (): Promise<Task[]> => {
+export const getTasks = async (title: string): Promise<Task[]> => {
   const db = getDbInstance()
-  const tasks: Task[] = await db.getData('/tasks')
+  let tasks: Task[] = await db.getData('/tasks')
+
+  if (title) {
+    tasks = tasks.filter((task: Task) => task.title.toLowerCase().includes(title))
+  }
+
   return tasks
 }
 

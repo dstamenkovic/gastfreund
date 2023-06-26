@@ -9,6 +9,12 @@ import {
   getTaskById,
 } from '../services/TaskService'
 
+interface SearchTasksProps extends Request {
+  query: {
+    title: string
+  }
+}
+
 interface CreateTaskProps extends Request {
   body: Omit<Task, 'id' | 'updateAt'>
 }
@@ -37,9 +43,18 @@ export const get = async (req: FindTaskProps, res: Response) => {
   }
 }
 
-export const list = async (req: Request, res: Response) => {
-  const tasks = await getTasks()
-  res.send(tasks)
+export const list = async (req: SearchTasksProps, res: Response) => {
+  try {
+    const { title } = req.query
+    const tasks = await getTasks(title)
+    return res.send(tasks)
+  } catch (error) {
+    console.log(error)
+    res.status(400).send({
+      success: false,
+      message: error instanceof Error ? error.message : 'Could not retrieve tasks',
+    })
+  }
 }
 
 export const create = async (req: CreateTaskProps, res: Response) => {
@@ -78,8 +93,7 @@ export const deleteTask = async (req: FindTaskProps, res: Response) => {
     const { id } = req.params
     await deleteTaskService(id)
     res.status(200).send({
-      success: true,
-      message: 'Task deleted successfully ',
+      id,
     })
   } catch (error) {
     res.status(400).send({

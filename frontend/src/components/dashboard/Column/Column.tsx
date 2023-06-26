@@ -21,9 +21,10 @@ const NoTasks = styled(Typography)`
 type Props = {
   status: 'to-do' | 'in-progress' | 'done'
   tasks: TaskType[]
+  globalLoading: boolean
 }
 
-const Column = ({ status, tasks }: Props) => {
+const Column = ({ status, tasks, globalLoading }: Props) => {
   const creatingTaskIn = useSelector((state: RootState) => state.dash.creatingTaskIn)
   const dispatch = useDispatch()
   return (
@@ -31,20 +32,20 @@ const Column = ({ status, tasks }: Props) => {
       <TitleWrapper item status={status}>
         <Title variant="h5">{status.replace('-', ' ')}</Title>
         <Count variant="h6">({tasks.length})</Count>
-        <AddBtn onClick={() => dispatch(setCreatingTaskIn(status))}>
+        <AddBtn onClick={() => dispatch(setCreatingTaskIn(status))} disabled={globalLoading}>
           <AddIcon />
         </AddBtn>
       </TitleWrapper>
       <TasksWrapper container item status={status} direction="column">
         {creatingTaskIn === status && (
           <Grid item>
-            <Add status={status} />
+            <Add status={status} globalLoading={globalLoading} />
           </Grid>
         )}
         {tasks.length ? (
           tasks.map(task => (
             <Grid item key={task.id}>
-              <Task task={task} />
+              <Task task={task} globalLoading={globalLoading} />
             </Grid>
           ))
         ) : (
