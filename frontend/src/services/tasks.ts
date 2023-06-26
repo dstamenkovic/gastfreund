@@ -1,5 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+
 import type { Task } from 'Types'
+import { setErrorMsg } from 'store/dashSlice'
+
+type ApiErrorType = {
+  error: {
+    data: {
+      message: string
+    }
+    status: number
+  }
+}
 
 export const tasksApi = createApi({
   reducerPath: 'tasksApi',
@@ -22,8 +33,8 @@ export const tasksApi = createApi({
           if (title) {
             dispatch(tasksApi.util.updateQueryData('getTasks', undefined, () => data))
           }
-        } catch (error) {
-          console.log(error)
+        } catch (error: any) {
+          dispatch(setErrorMsg((error as ApiErrorType).error.data.message))
         }
       },
     }),
@@ -44,8 +55,8 @@ export const tasksApi = createApi({
               return old
             })
           )
-        } catch (error) {
-          console.log(error)
+        } catch (error: any) {
+          dispatch(setErrorMsg((error as ApiErrorType).error.data.message))
         }
       },
     }),
@@ -69,8 +80,8 @@ export const tasksApi = createApi({
               return old
             })
           )
-        } catch (error) {
-          console.log(error)
+        } catch (error: any) {
+          dispatch(setErrorMsg((error as ApiErrorType).error.data.message))
         }
       },
     }),
@@ -92,8 +103,8 @@ export const tasksApi = createApi({
               return old
             })
           )
-        } catch (error) {
-          console.log(error)
+        } catch (error: any) {
+          dispatch(setErrorMsg((error as ApiErrorType).error.data.message))
         }
       },
     }),

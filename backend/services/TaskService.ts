@@ -14,7 +14,7 @@ const taskSchema = Joi.object({
 const checkIfTitleExists = async (title: string) => {
   const db = getDbInstance()
   const tasks = await db.getData('/tasks')
-  const taskIdx = tasks.findIndex((task: Task) => task.title === title)
+  const taskIdx = tasks.findIndex((task: Task) => task.title.toLowerCase() === title.toLowerCase())
   return taskIdx !== -1
 }
 
