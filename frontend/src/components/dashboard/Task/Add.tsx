@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import type { RootState } from 'store'
@@ -21,12 +20,9 @@ const AddTask = ({ status, globalLoading }: Props) => {
 
   const dataPersisted = creatingTaskText && creatingTaskIn === status
 
-  const saveTextToStore = useCallback(
-    (inputVal: string) => {
-      dispatch(setCreatingTaskText(inputVal))
-    },
-    [dispatch]
-  )
+  const saveTextToStore = (inputVal: string) => {
+    dispatch(setCreatingTaskText(inputVal))
+  }
 
   const saveTask = async (inputVal: string) => {
     if (inputVal.length > 2) {

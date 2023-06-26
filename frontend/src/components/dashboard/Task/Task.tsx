@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 import Typography from '@mui/material/Typography'
 import { useSelector, useDispatch } from 'react-redux'
@@ -26,12 +26,9 @@ const Task = ({ task, globalLoading }: Props) => {
 
   const dataPersisted = activeTaskText && activeTaskID === task.id
 
-  const saveTextToStore = useCallback(
-    (inputVal: string) => {
-      dispatch(setActiveTaskText(inputVal))
-    },
-    [dispatch]
-  )
+  const saveTextToStore = (inputVal: string) => {
+    dispatch(setActiveTaskText(inputVal))
+  }
 
   const saveTask = async (inputVal: string) => {
     if (inputVal === task.title) {

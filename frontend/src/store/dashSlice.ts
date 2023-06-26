@@ -37,6 +37,7 @@ const dashSlice = createSlice({
     },
     setCreatingTaskIn(state, action: PayloadAction<TaskType['status'] | ''>) {
       state.creatingTaskIn = action.payload
+      state.creatingTaskText = ''
     },
     setCreatingTaskText(state, action: PayloadAction<string>) {
       state.creatingTaskText = action.payload

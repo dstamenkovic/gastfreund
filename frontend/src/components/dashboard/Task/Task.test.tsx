@@ -50,8 +50,11 @@ describe('Task', () => {
     // placeholder text should be hidden
     const taskTitleEl = screen.queryByTestId('task-title')
     expect(taskTitleEl).not.toBeInTheDocument()
+    // delete btn should be hidden
+    const deleteBtn = screen.queryByLabelText(/delete task/i)
+    expect(deleteBtn).not.toBeInTheDocument()
 
-    // it should hide the input when cancel btn is clicked
+    // it should switch back to "view" mode when cancel btn is clicked
     const cancelBtn = screen.getByText(/cancel/i)
     fireEvent.click(cancelBtn)
     // input should be hidden
