@@ -7,6 +7,7 @@ export interface DashState {
   activeTaskText: string
   creatingTaskIn: TaskType['status'] | ''
   creatingTaskText: string
+  darkMode: boolean
 }
 
 const initialState: DashState = {
@@ -14,6 +15,7 @@ const initialState: DashState = {
   activeTaskText: '',
   creatingTaskIn: '',
   creatingTaskText: '',
+  darkMode: false,
 }
 
 const dashSlice = createSlice({
@@ -41,6 +43,9 @@ const dashSlice = createSlice({
       state.creatingTaskIn = ''
       state.creatingTaskText = ''
     },
+    setDarkMode(state, action: PayloadAction<boolean>) {
+      state.darkMode = action.payload
+    },
   },
 })
 
@@ -51,6 +56,7 @@ export const {
   setCreatingTaskIn,
   setCreatingTaskText,
   removeCreatingTask,
+  setDarkMode,
 } = dashSlice.actions
 
 export default dashSlice.reducer

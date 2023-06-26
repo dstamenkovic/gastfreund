@@ -1,18 +1,24 @@
 import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Box from '@mui/material/Box'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import SearchIcon from '@mui/icons-material/Search'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
 import IconButton from '@mui/material/IconButton'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
 
 import { useLazyGetTasksQuery } from 'services/tasks'
+import type { RootState } from 'store'
+import { setDarkMode } from 'store/dashSlice'
 import { Search, SearchIconWrapper, StyledInputBase } from './Navbar.styles'
 
 const Navbar = () => {
+  const darkMode = useSelector((state: RootState) => state.dash.darkMode)
+  const dispatch = useDispatch()
   const [inputValue, setInputValue] = useState('')
   const [searched, setSearched] = useState(false)
   const [getTasks, { isFetching }] = useLazyGetTasksQuery(undefined)
@@ -39,8 +45,9 @@ const Navbar = () => {
             color="inherit"
             aria-label="dark mode"
             sx={{ mr: 2 }}
+            onClick={() => dispatch(setDarkMode(!darkMode))}
           >
-            <DarkModeIcon />
+            {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
           </IconButton>
           <Typography
             variant="h6"
