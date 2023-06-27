@@ -3,7 +3,7 @@ import { render, screen, fakeTasks, fireEvent } from 'test-utils'
 
 describe('Column', () => {
   it('Renders correctly', () => {
-    render(<Column status="to-do" tasks={fakeTasks} globalLoading={false} />)
+    render(<Column status="to-do" tasks={fakeTasks} />)
     // should render title
     expect(screen.getByText(/to do/i)).toBeInTheDocument()
     // should display count
@@ -15,12 +15,12 @@ describe('Column', () => {
   })
 
   it('Renders "no tasks" message', () => {
-    render(<Column status="to-do" tasks={[]} globalLoading={false} />)
+    render(<Column status="to-do" tasks={[]} />)
     expect(screen.getByText(/no tasks/i)).toBeInTheDocument()
   })
 
   it('Displays "add task" component', () => {
-    render(<Column status="to-do" tasks={[]} globalLoading={false} />)
+    render(<Column status="to-do" tasks={[]} />)
     const addBtn = screen.getByLabelText('add task')
     fireEvent.click(addBtn)
     expect(screen.getByTestId('add-task-wrapper')).toBeInTheDocument()

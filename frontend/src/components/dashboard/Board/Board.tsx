@@ -5,12 +5,11 @@ import type { Task } from 'Types'
 
 type Props = {
   tasks: Task[]
-  globalLoading: boolean
 }
 
 const columns: Task['status'][] = ['to-do', 'in-progress', 'done']
 
-const Board = ({ tasks, globalLoading }: Props) => {
+const Board = ({ tasks }: Props) => {
   // group tasks by status
   const groupedTasks = tasks.reduce((acc, task) => {
     const { status } = task
@@ -24,12 +23,7 @@ const Board = ({ tasks, globalLoading }: Props) => {
   return (
     <Grid container direction="row" spacing={2}>
       {columns.map(status => (
-        <Column
-          key={status}
-          status={status}
-          tasks={groupedTasks[status] || []}
-          globalLoading={globalLoading}
-        />
+        <Column key={status} status={status} tasks={groupedTasks[status] || []} />
       ))}
     </Grid>
   )

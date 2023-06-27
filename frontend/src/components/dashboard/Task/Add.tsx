@@ -9,10 +9,9 @@ import Edit from './Edit'
 
 type Props = {
   status: TaskType['status']
-  globalLoading: boolean
 }
 
-const AddTask = ({ status, globalLoading }: Props) => {
+const AddTask = ({ status }: Props) => {
   const creatingTaskIn = useSelector((state: RootState) => state.dash.creatingTaskIn)
   const creatingTaskText = useSelector((state: RootState) => state.dash.creatingTaskText)
   const dispatch = useDispatch()
@@ -40,7 +39,7 @@ const AddTask = ({ status, globalLoading }: Props) => {
       <TaskElement status={status} elevation={7}>
         <Edit
           title={dataPersisted ? creatingTaskText : ''}
-          isLoading={isLoading || globalLoading}
+          isLoading={isLoading}
           onSave={saveTask}
           onCancel={onCancel}
           saveTextToStore={saveTextToStore}

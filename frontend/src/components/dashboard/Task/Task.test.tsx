@@ -5,13 +5,13 @@ import Task from './Task'
 describe('Task', () => {
   it('Renders correctly', () => {
     const task = fakeTasks[0]
-    render(<Task task={task} globalLoading={false} />)
+    render(<Task task={task} />)
     expect(screen.getByText(task.title)).toBeInTheDocument()
   })
 
   it('Displays the delete button on hover', () => {
     const task = fakeTasks[0]
-    render(<Task task={task} globalLoading={false} />)
+    render(<Task task={task} />)
 
     // const taskElement = container.querySelector(`div[status=${task.status}]`)
     const taskEl = screen.getByTestId('task')
@@ -24,7 +24,7 @@ describe('Task', () => {
 
   it('Displays the delete dialog when delete button is clicked', () => {
     const task = fakeTasks[0]
-    render(<Task task={task} globalLoading={false} />)
+    render(<Task task={task} />)
     // hover over task
     const taskEl = screen.getByTestId('task')
     fireEvent.mouseEnter(taskEl)
@@ -41,7 +41,7 @@ describe('Task', () => {
 
   it('Should switch to edit mode when double clicked', () => {
     const task = fakeTasks[0]
-    render(<Task task={task} globalLoading={false} />)
+    render(<Task task={task} />)
     // double click
     fireEvent.doubleClick(screen.getByText(task.title))
     // input should be visible

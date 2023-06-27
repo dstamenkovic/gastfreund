@@ -25,11 +25,11 @@ export const tasksApi = createApi({
           (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
         )
       },
-      // needed to update the data when searching
+      // need to update the data when searching
       async onQueryStarted(title, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
-          // update/replace the list of tasks when searching
+          // update/replace the list of tasks only when searching
           if (title) {
             dispatch(tasksApi.util.updateQueryData('getTasks', undefined, () => data))
           }
@@ -48,7 +48,7 @@ export const tasksApi = createApi({
         try {
           const { data } = await queryFulfilled
           const newTask = data
-          // add the new task to the list of tasks, at the beginning
+          // add the new task to the list of tasks, at the start
           dispatch(
             tasksApi.util.updateQueryData('getTasks', undefined, old => {
               old.unshift(newTask)

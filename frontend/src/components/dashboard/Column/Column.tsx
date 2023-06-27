@@ -15,10 +15,9 @@ import { TitleWrapper, Title, TasksWrapper, AddBtn, Count, NoTasks } from './Col
 type Props = {
   status: 'to-do' | 'in-progress' | 'done'
   tasks: TaskType[]
-  globalLoading: boolean
 }
 
-const Column = ({ status, tasks, globalLoading }: Props) => {
+const Column = ({ status, tasks }: Props) => {
   const creatingTaskIn = useSelector((state: RootState) => state.dash.creatingTaskIn)
   const dispatch = useDispatch()
   const [isOver, setIsOver] = useState(false)
@@ -55,7 +54,7 @@ const Column = ({ status, tasks, globalLoading }: Props) => {
           <Count variant="h6">({tasks.length})</Count>
           <AddBtn
             onClick={() => dispatch(setCreatingTaskIn(status))}
-            disabled={globalLoading || creatingTaskIn === status}
+            disabled={creatingTaskIn === status}
             aria-label="add task"
           >
             <AddIcon />
@@ -74,13 +73,13 @@ const Column = ({ status, tasks, globalLoading }: Props) => {
         >
           {creatingTaskIn === status && (
             <Grid item data-testid="add-task-wrapper">
-              <Add status={status} globalLoading={globalLoading} />
+              <Add status={status} />
             </Grid>
           )}
           {tasks.length ? (
             tasks.map(task => (
               <Grid item key={task.id} data-testid="task-wrapper">
-                <Task task={task} globalLoading={globalLoading} />
+                <Task task={task} />
               </Grid>
             ))
           ) : (

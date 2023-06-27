@@ -22,4 +22,13 @@ describe('Navbar', () => {
     fireEvent.keyDown(searchInput, { key: 'Enter', code: 'Enter' })
     expect(screen.getByRole('progressbar')).toBeInTheDocument()
   })
+
+  it('Should not search with less than 2 characters', () => {
+    render(<Navbar />)
+    const searchInput = screen.getByPlaceholderText('Search…')
+    fireEvent.focus(searchInput)
+    fireEvent.change(searchInput, { target: { value: 't' } })
+    fireEvent.keyDown(searchInput, { key: 'Enter', code: 'Enter' })
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+  })
 })

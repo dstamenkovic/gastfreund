@@ -27,7 +27,6 @@ const DashboardContainer = () => {
   const errorMsg = useSelector((state: RootState) => state.dash.errorMsg)
   const dispatch = useDispatch()
   const { data, isLoading } = useGetTasksQuery(undefined)
-  const globalLoading = isLoading
 
   // clears the error message
   useEffect(() => {
@@ -40,8 +39,8 @@ const DashboardContainer = () => {
 
   return (
     <Wrapper maxWidth="lg">
-      {globalLoading && <Loader open={globalLoading} />}
-      {data && <Board tasks={data} globalLoading={globalLoading} />}
+      {isLoading && <Loader open={isLoading} />}
+      {data && <Board tasks={data} />}
       {errorMsg && <Error severity="error">{errorMsg}</Error>}
     </Wrapper>
   )

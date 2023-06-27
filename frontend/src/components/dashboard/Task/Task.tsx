@@ -13,10 +13,9 @@ import AlertDialog from 'components/AlertDialog'
 
 type Props = {
   task: TaskType
-  globalLoading: boolean
 }
 
-const Task = ({ task, globalLoading }: Props) => {
+const Task = ({ task }: Props) => {
   const activeTaskID = useSelector((state: RootState) => state.dash.activeTaskID)
   const activeTaskText = useSelector((state: RootState) => state.dash.activeTaskText)
   const dispatch = useDispatch()
@@ -83,7 +82,7 @@ const Task = ({ task, globalLoading }: Props) => {
       )}
       {activeTaskID === task.id ? (
         <Edit
-          isLoading={isLoading || globalLoading}
+          isLoading={isLoading}
           title={dataPersisted ? activeTaskText : task.title}
           onSave={saveTask}
           onCancel={onCancel}
