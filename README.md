@@ -11,6 +11,6 @@ To run separately, use `npm run backend` and `npm run frontend`.
 
 Tests:
 
-### `npm run test`
+### `npm run test:backend`
 
-Runs backend and frontend tests. To run separately, use `npm run test:backend` and `npm run test:frontend`.
+### `npm run test:frontend`
