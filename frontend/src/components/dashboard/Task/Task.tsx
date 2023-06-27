@@ -48,12 +48,19 @@ const Task = ({ task, globalLoading }: Props) => {
     setShowDeleteDialog(false)
   }
 
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    e.dataTransfer.setData('taskId', task.id)
+    e.dataTransfer.setData('taskStatus', task.status)
+  }
+
   return (
     <TaskElement
       status={task.status}
       elevation={activeTaskID === task.id ? 7 : 3}
       onDoubleClick={() => dispatch(setActiveTaskID(task.id))}
       data-testid="task"
+      draggable={activeTaskID !== task.id}
+      onDragStart={onDragStart}
     >
       {showDeleteDialog && (
         <AlertDialog

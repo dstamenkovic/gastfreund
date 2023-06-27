@@ -7,6 +7,7 @@ import { returnColumnColor, returnColumnTitleColor } from 'utils/statusColor'
 
 type StyleProps = {
   status: 'to-do' | 'in-progress' | 'done'
+  isover?: number
 }
 
 export const TitleWrapper = styled(Grid)<StyleProps>`
@@ -31,9 +32,19 @@ export const Count = styled(Typography)`
 `
 
 export const TasksWrapper = styled(Grid)<StyleProps>`
+  position: relative;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  background-color: ${({ status }) => returnColumnColor(status)};
+  background-color: ${({ status, isover }) =>
+    isover ? returnColumnTitleColor(status) : returnColumnColor(status)};
+  box-shadow: ${({ theme, isover }) => (isover ? theme.shadows[10] : 'none')};
+`
+
+export const NoTasks = styled(Typography)`
+  color: #fff;
+  text-align: center;
+  text-transform: capitalize;
+  padding: 1rem;
 `
 
 export const AddBtn = styled(IconButton)`

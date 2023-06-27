@@ -77,7 +77,9 @@ export const tasksApi = createApi({
               if (idx !== -1) {
                 old[idx] = updatedTask
               }
-              return old
+              return old.sort(
+                (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+              )
             })
           )
         } catch (error: any) {
