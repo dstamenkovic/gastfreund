@@ -11,14 +11,14 @@ const taskSchema = Joi.object({
   updatedAt: Joi.date().required(),
 })
 
-const checkIfTitleExists = async (title: string) => {
+const checkIfTitleExists = async (title: string): Promise<boolean> => {
   const db = getDbInstance()
   const tasks = await db.getData('/tasks')
   const taskIdx = tasks.findIndex((task: Task) => task.title.toLowerCase() === title.toLowerCase())
   return taskIdx !== -1
 }
 
-export const getTaskById = async (id: string) => {
+export const getTaskById = async (id: string): Promise<Task> => {
   const db = getDbInstance()
   const taskIdx = await db.getIndex('/tasks', id)
   if (taskIdx === -1) {
